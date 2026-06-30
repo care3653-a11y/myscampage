@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="max-w-3xl mx-auto">
+  <div class="text-center mb-12">
+    <h1 class="text-5xl font-bold text-blue-900">AI Scam Detector</h1>
+    <p class="text-gray-600 mt-4 text-xl">Our advanced AI will analyze your case step by step and connect you to a human expert if needed.</p>
+  </div>
+
+  <!-- Input Form -->
+  <div id="inputForm" class="bg-white rounded-3xl shadow-2xl p-12">
+    <label class="block text-2xl font-semibold mb-6 text-gray-800">What are you checking?</label>
+    <select id="inputType" class="w-full p-6 border border-gray-300 rounded-3xl focus:outline-none focus:border-blue-500 text-lg">
+      <option value="">Select Type</option>
+      <option value="account">Account Information</option>
+      <option value="email">Email Address</option>
+      <option value="link">Website / Link</option>
+      <option value="investment">Investment Offer</option>
+      <option value="payment">Payment Request</option>
+      <option value="other">Other Suspicious Activity</option>
+    </select>
+
+    <label class="block text-2xl font-semibold mt-10 mb-6 text-gray-800">Describe the scenario</label>
+    <textarea id="inputText" rows="6" class="w-full p-6 border border-gray-300 rounded-3xl focus:outline-none focus:border-blue-500 text-lg" 
+              placeholder="Example: Someone contacted me claiming to be from my bank..."></textarea>
+
+    <div class="mt-10">
+      <label class="block text-2xl font-semibold mb-6 text-gray-800">Upload up to 3 screenshots or proofs</label>
+      <input type="file" id="screenshot1" accept="image/*" class="w-full text-sm mb-4">
+      <input type="file" id="screenshot2" accept="image/*" class="w-full text-sm mb-4">
+      <input type="file" id="screenshot3" accept="image/*" class="w-full text-sm">
+    </div>
+
+    <button onclick="startAnalysis()" 
+            class="mt-12 w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-8 rounded-3xl text-3xl font-semibold shadow-lg hover:brightness-110 transition-all duration-300">
+      Start AI Analysis
+    </button>
+  </div>
+
+  <!-- AI Chat Interface -->
+  <div id="aiChat" class="hidden mt-16 bg-white rounded-3xl shadow-2xl p-10">
+    <div id="chatMessages" class="h-[460px] overflow-y-auto space-y-8 pr-8"></div>
+    
+    <div class="mt-10 flex gap-4">
+      <input type="text" id="userInput" placeholder="Ask the AI or expert anything..." 
+             class="flex-1 p-6 border border-gray-300 rounded-3xl focus:outline-none focus:border-blue-500 text-lg">
+      <button onclick="sendUserMessage()" 
+              class="bg-blue-600 hover:bg-blue-700 text-white px-14 rounded-3xl font-semibold text-xl transition">
+        Send
+      </button>
+    </div>
+
+    <button onclick="resetAnalysis()" 
+            class="mt-10 w-full border-2 border-gray-300 py-6 rounded-3xl text-gray-600 hover:bg-gray-50 font-medium text-xl">
+      Start a New Analysis
+    </button>
+  </div>
+</div>
+
+<script>
+async function addMessage(text, type = 'ai') {
+  const chat = document.getElementById('chatMessages');
+  const msg = document.createElement('div');
+  msg.className = type === 'ai' ? 'text-gray-600' : 'text-right';
+  msg.innerHTML = type === 'ai' ? 
+    `<div class="max-w-[85%] bg-gray-100 p-6 rounded-3xl">${text}</div>` :
+    `<div class="max-w-[85%] bg-blue-600 text-white p-6 rounded-3xl inline-block">${text}</div>`;
+  chat.appendChild(msg);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+async function startAnalysis() {
+  const type = document.getElementById('inputType').value;
+  const text = document.getElementById('inputText').value.trim();
+  if (!text) {
+    alert("Please describe the suspicious activity.");
+    return;
+  }
+
+  document.getElementById('inputForm').classList.add('hidden');
+  document.getElementById('aiChat').classList.remove('hidden');
+
+  const steps = [
+    "Reading your request carefully...",
+    "Checking against known scam databases...",
+    "Analyzing language patterns and urgency...",
+    "Verifying company / domain reputation...",
+    "Cross-referencing recent scam reports...",
+    "Evaluating risk level based on red flags...",
+    "Finalizing comprehensive assessment..."
+  ];
+
+  for (let step of steps) {
+    addMessage(step);
+    await new Promise(r => setTimeout(r, 1600 + Math.random() * 2400));
+  }
+
+  let tailored = "This request shows moderate suspicious indicators.";
+  if (type === "investment" || text.toLowerCase().includes("return")) {
+    tailored = "This shows classic investment scam patterns with unrealistic return promises.";
+  } else if (type === "account" || text.toLowerCase().includes("account")) {
+    tailored = "This has strong signs of impersonation scam targeting your account.";
+  } else if (type === "email" || text.toLowerCase().includes("email")) {
+    tailored = "This matches common phishing or email scam tactics.";
+  }
+
+  addMessage(`
+    <strong>AI Analysis Complete</strong><br><br>
+    ${tailored}<br><br>
+    <span class="text-amber-600">Recommendation: This is likely fraud. Do not send money or share details. Contact a human expert immediately.</span>
+  `, "ai");
+
+  const expertBtn = document.createElement('button');
+  expertBtn.className = "mt-12 w-full bg-blue-600 text-white py-6 rounded-3xl font-semibold text-2xl";
+  expertBtn.textContent = "Connect to Human Expert";
+  expertBtn.onclick = connectToExpert;
+  document.getElementById('chatMessages').appendChild(expertBtn);
+}
+
+function connectToExpert() {
+  addMessage("Connecting you to a live expert... Please wait a moment.", "ai");
+  setTimeout(() => {
+    if (typeof Tawk_API !== 'undefined') {
+      Tawk_API.toggle();
+    }
+  }, 800);
+}
+
+function sendUserMessage() {
+  const input = document.getElementById('userInput');
+  const text = input.value.trim();
+  if (!text) return;
+
+  addMessage(text, "user");
+  input.value = "";
+}
+
+function resetAnalysis() {
+  location.reload();
+}
+</script>
+{% endblock %}

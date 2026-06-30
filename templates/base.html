@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MyScamShield - Support for Scam Victims</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+
+  <!-- Top Trust Bar -->
+  <div class="bg-blue-800 text-white text-center py-2 text-sm font-medium">
+    24/7 Confidential Support • Helpline: 1800-555-1234
+  </div>
+
+  <!-- Header -->
+  <header class="bg-white shadow-md sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
+      <a href="/" class="flex items-center gap-4 hover:opacity-90 transition">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="MyScamShield Logo" class="h-12 w-auto">
+        <span class="text-3xl font-bold text-blue-900">MyScamShield</span>
+      </a>
+
+      <nav class="hidden md:flex gap-8 text-gray-700 font-medium">
+        <a href="/" class="hover:text-blue-600">Home</a>
+        <a href="/report" class="hover:text-blue-600">Report Scam</a>
+        <a href="/detector" class="hover:text-blue-600">AI Detector</a>
+        <a href="/support" class="hover:text-blue-600">Support</a>
+        <a href="/resources" class="hover:text-blue-600">Resources</a>
+      </nav>
+
+      <button onclick="toggleMenu()" class="md:hidden text-3xl text-gray-700 hover:text-blue-600">
+        ☰
+      </button>
+    </div>
+  </header>
+
+  <!-- Side Menu -->
+  <div id="sideMenu" class="hidden fixed inset-0 bg-black/70 z-[100] flex">
+    <div class="bg-white w-80 h-full p-8">
+      <button onclick="toggleMenu()" class="text-4xl mb-10">✕</button>
+      <div class="space-y-6 text-xl">
+        <a href="/" class="block py-2">Home</a>
+        <a href="/report" class="block py-2">Report Scam</a>
+        <a href="/detector" class="block py-2">AI Detector</a>
+        <a href="/support" class="block py-2">Support</a>
+        <a href="/resources" class="block py-2">Resources</a>
+      </div>
+    </div>
+  </div>
+
+  <main class="min-h-screen">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, msg in messages %}
+          <div class="p-5 mb-8 rounded-3xl {{ 'bg-green-100 text-green-800' if category == 'success' else 'bg-red-100 text-red-800' }}">
+            {{ msg }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-blue-900 text-white mt-20">
+    <div class="max-w-7xl mx-auto px-6 py-16">
+      <div class="grid md:grid-cols-4 gap-10">
+        <div>
+          <div class="flex items-center gap-3 mb-6">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="MyScamShield" class="h-10 w-auto">
+          </div>
+          <p class="text-blue-200 text-sm">Helping scam victims report, recover emotionally, and rebuild.</p>
+        </div>
+        <div>
+          <h4 class="font-semibold mb-5">Quick Links</h4>
+          <ul class="space-y-3 text-sm">
+            <li><a href="/" class="hover:text-white">Home</a></li>
+            <li><a href="/report" class="hover:text-white">Report Scam</a></li>
+            <li><a href="/detector" class="hover:text-white">AI Detector</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-semibold mb-5">Support</h4>
+          <ul class="space-y-3 text-sm">
+            <li>Helpline: 1800-555-1234</li>
+            <li><a href="/support" class="hover:text-white">Talk to Support</a></li>
+            <li><a href="/resources" class="hover:text-white">Prevention Tips</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-semibold mb-5">Legal</h4>
+          <p class="text-xs text-blue-300">We do not guarantee money recovery. Always report to police and regulators.</p>
+        </div>
+      </div>
+      <div class="text-center text-xs text-blue-400 mt-16">
+        © 2026 MyScamShield • All Rights Reserved
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function toggleMenu() { document.getElementById('sideMenu').classList.toggle('hidden'); }
+  </script>
+
+  <!-- Tawk.to Live Chat -->
+  <!--Start of Tawk.to Script-->
+  <script type="text/javascript">
+  var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+  (function(){
+  var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+  s1.async=true;
+  s1.src='https://embed.tawk.to/6a42bc53f11c9d1d4ad0d01c/default';
+  s1.charset='UTF-8';
+  s1.setAttribute('crossorigin','*');
+  s0.parentNode.insertBefore(s1,s0);
+  })();
+  </script>
+  <!--End of Tawk.to Script-->
+</body>
+</html>

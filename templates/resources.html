@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="max-w-4xl mx-auto">
+  <h1 class="text-4xl font-bold text-blue-900 mb-8">Resources & Prevention</h1>
+  
+  <div class="grid md:grid-cols-2 gap-8">
+    <div class="bg-white p-8 rounded-3xl shadow">
+      <h3 class="font-semibold text-2xl mb-4">Latest Scam Alerts</h3>
+      <ul class="space-y-6">
+        <li class="border-l-4 border-red-500 pl-4">
+          <strong>Crypto Investment Scams</strong> — Fake platforms promising high returns
+        </li>
+        <li class="border-l-4 border-red-500 pl-4">
+          <strong>Romance Scams</strong> — Scammers building trust then asking for money
+        </li>
+        <li class="border-l-4 border-red-500 pl-4">
+          <strong>Government Impersonation</strong> — Fake calls from police or banks
+        </li>
+      </ul>
+    </div>
+
+    <div class="bg-white p-8 rounded-3xl shadow">
+      <h3 class="font-semibold text-2xl mb-4">How to Protect Yourself</h3>
+      <ul class="space-y-4 text-sm">
+        <li>✅ Never send money to someone you met online</li>
+        <li>✅ Verify all investment opportunities</li>
+        <li>✅ Use our AI Detector before clicking links</li>
+        <li>✅ Enable 2FA on all accounts</li>
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}

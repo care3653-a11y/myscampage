@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- Hero Section with Background -->
+<div class="relative h-[70vh] flex items-center justify-center text-white overflow-hidden">
+  <img src="{{ url_for('static', filename='images/hero.jpg') }}" 
+       alt="Support Background" 
+       class="absolute inset-0 w-full h-full object-cover">
+  <div class="absolute inset-0 bg-gradient-to-b from-black/50 to-black/70"></div>
+  
+  <div class="relative z-10 text-center px-6 max-w-3xl mx-auto">
+    <h1 class="text-5xl md:text-6xl font-bold leading-tight mb-6">
+      Confidential Support
+    </h1>
+    <p class="text-2xl mb-10">
+      You are safe here. Our team is ready to listen and help you through this difficult time.
+    </p>
+    <button onclick="openTawkTo()" class="bg-white text-blue-900 px-10 py-5 rounded-2xl text-lg font-semibold hover:bg-gray-100">
+      Start Support Session
+    </button>
+  </div>
+</div>
+
+<!-- Content -->
+<div class="max-w-4xl mx-auto px-6 py-16">
+  <div class="prose prose-lg mx-auto text-gray-700">
+    <h2 class="text-3xl font-semibold text-blue-900 mb-8">How We Support You</h2>
+    <p class="text-lg">Being scammed can be incredibly stressful and isolating. Our trained support team provides:</p>
+    
+    <ul class="list-disc pl-6 space-y-4 mt-8 text-lg">
+      <li>Non-judgmental listening and emotional validation</li>
+      <li>Step-by-step guidance on what to do next</li>
+      <li>Help preparing reports for police and financial institutions</li>
+      <li>Resources for financial recovery and mental wellbeing</li>
+      <li>Follow-up support through your personal ticket</li>
+    </ul>
+
+    <div class="mt-16 bg-blue-50 p-10 rounded-3xl text-center">
+      <p class="text-2xl font-medium">"You're taking the first brave step by reaching out. We're proud of you."</p>
+      <p class="mt-6 text-blue-600">- MyScamShield Support Team</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  function openTawkTo() {
+    if (typeof Tawk_API !== 'undefined') {
+      Tawk_API.toggle();
+    }
+  }
+</script>
+{% endblock %}
