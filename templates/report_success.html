@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Report received — MyScamShield{% endblock %}
+{% block content %}
+<div class="max-w-2xl mx-auto px-6 py-16">
+  <div class="bg-white rounded-3xl shadow-sm p-10 text-center">
+    <div class="mx-auto w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mb-6">
+      <span class="text-4xl">✓</span>
+    </div>
+    <h1 class="font-display text-3xl font-semibold text-ink mb-3">Report received</h1>
+    <p class="text-slate-600 mb-6">Thank you for telling us what happened. Keep this reference number for your records:</p>
+    <div class="inline-block bg-slate-100 rounded-2xl px-6 py-3 font-mono text-lg text-ink mb-8">{{ ticket.ticket_id }}</div>
+
+    <div class="text-left bg-blue-50 rounded-2xl p-6 mb-8">
+      <p class="font-semibold text-ink mb-2">Important next steps</p>
+      <p class="text-sm text-slate-700 leading-relaxed">
+        Submitting here does not replace official reporting. Please also contact your
+        <strong>local police</strong> and your <strong>bank or payment provider</strong>,
+        and report to the relevant authority for your country. You'll find the official
+        channels on our <a href="/resources#report-channels" class="text-brand underline">Resources page</a>.
+      </p>
+    </div>
+
+    <div class="flex flex-col sm:flex-row gap-4">
+      <button onclick="openChat()" class="flex-1 bg-brand text-white py-4 rounded-2xl font-semibold hover:brightness-110 transition">Talk to a volunteer now</button>
+      <a href="/resources#report-channels" class="flex-1 border-2 border-slate-300 text-slate-700 py-4 rounded-2xl font-semibold hover:bg-slate-50 transition text-center">Where to report</a>
+    </div>
+    <p class="text-xs text-slate-500 mt-6">A reminder: we will never ask you for money, and no genuine service charges a fee to recover funds.</p>
+  </div>
+</div>
+{% endblock %}

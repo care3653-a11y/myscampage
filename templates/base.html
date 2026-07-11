@@ -3,47 +3,75 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MyScamShield - Support for Scam Victims</title>
+  <title>{% block title %}MyScamShield — Support for Scam Victims{% endblock %}</title>
+  <meta name="description" content="MyScamShield helps scam victims report what happened, check for warning signs, and get guided to the right authorities by trained volunteers. We never ask you for money.">
+
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+            display: ['Fraunces', 'ui-serif', 'Georgia', 'serif'],
+          },
+          colors: {
+            ink:   '#0f2740',   // deep navy — calm, institutional
+            brand: '#1f5fbf',   // primary blue
+            trust: '#0e9f6e',   // reassurance green, used sparingly
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    html { scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      * { animation: none !important; transition: none !important; }
+    }
+  </style>
 </head>
-<body class="bg-gray-50">
+<body class="bg-slate-50 font-sans text-slate-800 antialiased">
 
   <!-- Top Trust Bar -->
-  <div class="bg-blue-800 text-white text-center py-2 text-sm font-medium">
-    24/7 Confidential Support • Helpline: 1239-255-5119
+  <div class="bg-ink text-white text-center py-2 text-sm font-medium px-4">
+    Free &amp; confidential • We will never ask you for money • Helpline: 1800-555-1234
   </div>
 
   <!-- Header -->
-  <header class="bg-white shadow-md sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
-      <a href="/" class="flex items-center gap-4 hover:opacity-90 transition">
-        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="MyScamShield Logo" class="h-12 w-auto">
-        <span class="text-3xl font-bold text-blue-900">MyScamShield</span>
+  <header class="bg-white shadow-sm sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <a href="/" class="flex items-center gap-3 hover:opacity-90 transition">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="MyScamShield logo" class="h-10 w-auto">
+        <span class="text-2xl font-display font-semibold text-ink">MyScamShield</span>
       </a>
 
-      <nav class="hidden md:flex gap-8 text-gray-700 font-medium">
-        <a href="/" class="hover:text-blue-600">Home</a>
-        <a href="/report" class="hover:text-blue-600">Report Scam</a>
-        <a href="/detector" class="hover:text-blue-600">AI Detector</a>
-        <a href="/support" class="hover:text-blue-600">Support</a>
-        <a href="/resources" class="hover:text-blue-600">Resources</a>
+      <nav class="hidden md:flex gap-8 text-slate-600 font-medium">
+        <a href="/" class="hover:text-brand transition">Home</a>
+        <a href="/self-check" class="hover:text-brand transition">Self-Check</a>
+        <a href="/report" class="hover:text-brand transition">Report a Scam</a>
+        <a href="/support" class="hover:text-brand transition">Support</a>
+        <a href="/resources" class="hover:text-brand transition">Resources</a>
       </nav>
 
-      <button onclick="toggleMenu()" class="md:hidden text-3xl text-gray-700 hover:text-blue-600">
-        ☰
-      </button>
+      <button onclick="toggleMenu()" aria-label="Open menu" class="md:hidden text-2xl text-slate-700 hover:text-brand">☰</button>
     </div>
   </header>
 
-  <!-- Side Menu -->
-  <div id="sideMenu" class="hidden fixed inset-0 bg-black/70 z-[100] flex">
-    <div class="bg-white w-80 h-full p-8">
-      <button onclick="toggleMenu()" class="text-4xl mb-10">✕</button>
-      <div class="space-y-6 text-xl">
+  <!-- Mobile Side Menu -->
+  <div id="sideMenu" class="hidden fixed inset-0 bg-black/60 z-[100]">
+    <div class="bg-white w-72 h-full p-8">
+      <button onclick="toggleMenu()" aria-label="Close menu" class="text-3xl mb-10 text-slate-500">✕</button>
+      <div class="space-y-4 text-lg font-medium">
         <a href="/" class="block py-2">Home</a>
-        <a href="/report" class="block py-2">Report Scam</a>
-        <a href="/detector" class="block py-2">AI Detector</a>
+        <a href="/self-check" class="block py-2">Self-Check</a>
+        <a href="/report" class="block py-2">Report a Scam</a>
         <a href="/support" class="block py-2">Support</a>
         <a href="/resources" class="block py-2">Resources</a>
       </div>
@@ -53,11 +81,13 @@
   <main class="min-h-screen">
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
-        {% for category, msg in messages %}
-          <div class="p-5 mb-8 rounded-3xl {{ 'bg-green-100 text-green-800' if category == 'success' else 'bg-red-100 text-red-800' }}">
-            {{ msg }}
-          </div>
-        {% endfor %}
+        <div class="max-w-4xl mx-auto px-6 pt-8">
+          {% for category, msg in messages %}
+            <div class="p-4 mb-4 rounded-2xl text-sm font-medium {{ 'bg-emerald-50 text-emerald-800 border border-emerald-200' if category == 'success' else 'bg-red-50 text-red-800 border border-red-200' }}">
+              {{ msg }}
+            </div>
+          {% endfor %}
+        </div>
       {% endif %}
     {% endwith %}
 
@@ -65,68 +95,66 @@
   </main>
 
   <!-- Footer -->
-  <footer class="bg-blue-900 text-white mt-20">
+  <footer class="bg-ink text-white mt-24">
     <div class="max-w-7xl mx-auto px-6 py-16">
       <div class="grid md:grid-cols-4 gap-10">
         <div>
-          <div class="flex items-center gap-3 mb-6">
-            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="MyScamShield" class="h-10 w-auto">
+          <div class="flex items-center gap-3 mb-5">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="MyScamShield" class="h-9 w-auto">
+            <span class="font-display text-lg">MyScamShield</span>
           </div>
-          <p class="text-blue-200 text-sm">Helping scam victims report, recover emotionally, and rebuild.</p>
+          <p class="text-slate-300 text-sm leading-relaxed">An independent, volunteer-run support service. We help scam victims report what happened, understand the warning signs, and reach the right authorities.</p>
         </div>
         <div>
-          <h4 class="font-semibold mb-5">Quick Links</h4>
-          <ul class="space-y-3 text-sm">
-            <li><a href="/" class="hover:text-white">Home</a></li>
-            <li><a href="/report" class="hover:text-white">Report Scam</a></li>
-            <li><a href="/detector" class="hover:text-white">AI Detector</a></li>
+          <h4 class="font-semibold mb-4">Get help</h4>
+          <ul class="space-y-2 text-sm text-slate-300">
+            <li><a href="/report" class="hover:text-white">Report a scam</a></li>
+            <li><a href="/self-check" class="hover:text-white">Run a self-check</a></li>
+            <li><a href="/support" class="hover:text-white">Talk to a volunteer</a></li>
           </ul>
         </div>
         <div>
-          <h4 class="font-semibold mb-5">Support</h4>
-          <ul class="space-y-3 text-sm">
-            <li>Helpline: 1239-255-5119          scamshieldrepresentative@gmail.com</li>
-            <li><a href="/support" class="hover:text-white">Talk to Support</a></li>
-            <li><a href="/resources" class="hover:text-white">Prevention Tips</a></li>
+          <h4 class="font-semibold mb-4">Learn</h4>
+          <ul class="space-y-2 text-sm text-slate-300">
+            <li><a href="/resources" class="hover:text-white">Prevention tips</a></li>
+            <li><a href="/resources#report-channels" class="hover:text-white">Where to report</a></li>
           </ul>
         </div>
         <div>
-          <h4 class="font-semibold mb-5">Legal</h4>
-          <p class="text-xs text-blue-300">We do not guarantee money recovery. Always report to police and regulators.</p>
+          <h4 class="font-semibold mb-4">Our promise</h4>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            We are not law enforcement and we do not recover funds. We will
+            <strong class="text-slate-200">never ask you for payment</strong>.
+            Anyone promising guaranteed recovery for a fee is running a scam.
+            Always report to your local police and your bank.
+          </p>
         </div>
       </div>
-      <div class="text-center text-xs text-blue-400 mt-16">
-        © 2026 MyScamShield • All Rights Reserved
+      <div class="text-center text-xs text-slate-500 mt-14 border-t border-white/10 pt-8">
+        © 2026 MyScamShield • Independent volunteer support service
       </div>
     </div>
   </footer>
 
   <script>
     function toggleMenu() { document.getElementById('sideMenu').classList.toggle('hidden'); }
+    function openChat() {
+      if (typeof Tawk_API !== 'undefined' && Tawk_API.toggle) { Tawk_API.toggle(); }
+      else { window.location.href = '/support'; }
+    }
   </script>
 
-  <!-- Tawk.to Live Chat -->
-  <!--Start of Tawk.to Script-->
+  <!-- Live chat with trained volunteers (Tawk.to). Replace the property ID with your own. -->
   <script type="text/javascript">
   var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
   (function(){
-  var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-  s1.async=true;
-  s1.src='https://embed.tawk.to/6a42bc53f11c9d1d4ad0d01c/default';
-  s1.charset='UTF-8';
-  s1.setAttribute('crossorigin','*');
-  s0.parentNode.insertBefore(s1,s0);
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/6a42bc53f11c9d1d4ad0d01c/default';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
   })();
   </script>
-  <script>
-function openSupportChat() {
-    if (typeof Tawk_API !== "undefined") {
-        Tawk_API.maximize();
-    } else {
-        alert("Support chat is still loading. Please try again in a moment.");
-    }
-}
-</script>
-  <!--End of Tawk.to Script-->
 </body>
 </html>

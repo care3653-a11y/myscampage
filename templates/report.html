@@ -1,91 +1,54 @@
 {% extends "base.html" %}
+{% block title %}Report a Scam — MyScamShield{% endblock %}
 {% block content %}
-<div class="max-w-2xl mx-auto">
-  <h1 class="text-4xl font-bold text-blue-900 mb-2">Report a Scam</h1>
-  <p class="text-gray-600 mb-8">Your report helps us fight scams and protect others.</p>
+<div class="max-w-2xl mx-auto px-6 py-14">
+  <h1 class="font-display text-4xl font-semibold text-ink mb-2">Report a scam</h1>
+  <p class="text-slate-600 mb-8">Tell us what happened. You'll get a reference number, and a volunteer can follow up. This is free and confidential.</p>
 
-  <form id="reportForm" method="POST" class="bg-white shadow-lg rounded-3xl p-10">
+  <form method="POST" action="/report" class="bg-white shadow-sm rounded-3xl p-8 md:p-10">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
     <div class="grid md:grid-cols-2 gap-6">
       <div>
-        <label class="block text-sm font-medium mb-2">Full Name</label>
-        <input type="text" name="name" required class="w-full p-4 border rounded-2xl focus:outline-none focus:border-blue-500">
+        <label class="block text-sm font-medium mb-2">Full name</label>
+        <input type="text" name="name" required class="w-full p-4 border border-slate-300 rounded-2xl focus:outline-none focus:border-brand">
       </div>
       <div>
-        <label class="block text-sm font-medium mb-2">Email Address</label>
-        <input type="email" name="email" required class="w-full p-4 border rounded-2xl focus:outline-none focus:border-blue-500">
+        <label class="block text-sm font-medium mb-2">Email address</label>
+        <input type="email" name="email" required class="w-full p-4 border border-slate-300 rounded-2xl focus:outline-none focus:border-brand">
       </div>
     </div>
 
     <div class="mt-6">
-      <label class="block text-sm font-medium mb-2">Phone Number (optional)</label>
-      <input type="tel" name="phone" class="w-full p-4 border rounded-2xl focus:outline-none focus:border-blue-500">
+      <label class="block text-sm font-medium mb-2">Phone number <span class="text-slate-400">(optional)</span></label>
+      <input type="tel" name="phone" class="w-full p-4 border border-slate-300 rounded-2xl focus:outline-none focus:border-brand">
     </div>
 
     <div class="mt-6">
-      <label class="block text-sm font-medium mb-2">Type of Scam</label>
-      <select name="scam_type" class="w-full p-4 border rounded-2xl focus:outline-none focus:border-blue-500">
-        <option value="Investment">Investment / Crypto Scam</option>
-        <option value="Romance">Romance Scam</option>
-        <option value="Tech Support">Tech Support Scam</option>
-        <option value="Impersonation">Government / Bank Impersonation</option>
-        <option value="Other">Other Scam</option>
+      <label class="block text-sm font-medium mb-2">Type of scam</label>
+      <select name="scam_type" class="w-full p-4 border border-slate-300 rounded-2xl focus:outline-none focus:border-brand bg-white">
+        <option value="Investment / Crypto">Investment / crypto scam</option>
+        <option value="Romance">Romance scam</option>
+        <option value="Tech Support">Tech support scam</option>
+        <option value="Impersonation">Government / bank impersonation</option>
+        <option value="Payment">Payment / money request</option>
+        <option value="Job">Job / employment scam</option>
+        <option value="Other">Other</option>
       </select>
     </div>
 
     <div class="mt-6">
       <label class="block text-sm font-medium mb-2">Tell us what happened</label>
-      <textarea name="description" rows="6" required 
-                class="w-full p-4 border rounded-3xl focus:outline-none focus:border-blue-500"></textarea>
+      <textarea name="description" rows="6" required class="w-full p-4 border border-slate-300 rounded-2xl focus:outline-none focus:border-brand"
+        placeholder="What was the offer or message? What did they ask for? Include dates, amounts, and any contact details or links you still have."></textarea>
     </div>
 
-    <button type="submit" 
-            class="mt-8 w-full bg-blue-600 hover:bg-blue-700 text-white py-5 rounded-2xl text-lg font-semibold">
-      Submit Report
+    <button type="submit" class="mt-8 w-full bg-brand text-white py-4 rounded-2xl text-lg font-semibold hover:brightness-110 transition">
+      Submit report
     </button>
+    <p class="text-xs text-slate-500 mt-4 text-center">
+      We only use these details to help with your case. We will never ask you for payment.
+    </p>
   </form>
-
-  <!-- Professional Success Popup -->
-  <div id="successPopup" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[300]">
-    <div class="bg-white rounded-3xl p-12 max-w-md w-full text-center relative shadow-2xl">
-      <!-- Close Button -->
-      <button onclick="closePopup()" class="absolute top-6 right-6 text-gray-400 hover:text-gray-600 text-4xl leading-none">✕</button>
-
-      <!-- Animation -->
-      <div class="mx-auto w-28 h-28 bg-green-100 rounded-full flex items-center justify-center mb-8">
-        <span class="text-7xl">✅</span>
-      </div>
-
-      <h2 class="text-3xl font-bold text-green-800 mb-4">Report Successfully Submitted!</h2>
-      <p class="text-green-700 text-lg mb-6">Thank you. Our team has received your report.</p>
-      <p class="text-gray-600 mb-8">A representative will contact you via email or phone number shortly.</p>
-      <p class="text-gray-700 mb-10">If you have any urgent issue, feel free to chat with our live agent right away.</p>
-      
-      <button onclick="openTawkTo()" class="bg-blue-600 text-white px-10 py-4 rounded-2xl text-lg font-semibold w-full mb-4">
-        Chat with Live Agent
-      </button>
-      <button onclick="closePopup()" class="text-gray-500 underline">Back to Report Page</button>
-    </div>
-  </div>
 </div>
-
-<script>
-  document.getElementById('reportForm').addEventListener('submit', function(e) {
-    e.preventDefault(); // Prevent default form submission
-
-    setTimeout(() => {
-      document.getElementById('successPopup').classList.remove('hidden');
-    }, 600);
-  });
-
-  function closePopup() {
-    document.getElementById('successPopup').classList.add('hidden');
-    document.getElementById('reportForm').reset();
-  }
-
-  function openTawkTo() {
-    if (typeof Tawk_API !== 'undefined') {
-      Tawk_API.toggle();
-    }
-  }
-</script>
 {% endblock %}

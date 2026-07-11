@@ -1,99 +1,100 @@
 {% extends "base.html" %}
 {% block content %}
 
-<!-- Hero Section with Background Image -->
-<div class="relative h-screen flex items-center justify-center text-white overflow-hidden">
-  <img src="{{ url_for('static', filename='images/hero.jpg') }}" 
-       alt="Hero Background" 
+<!-- Hero -->
+<section class="relative min-h-[88vh] flex items-center justify-center text-white overflow-hidden">
+  <img src="{{ url_for('static', filename='images/hero.jpg') }}" alt="" aria-hidden="true"
        class="absolute inset-0 w-full h-full object-cover">
-  <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-black/60 to-black/80"></div>
-  
-  <div class="relative z-10 text-center px-6 max-w-4xl mx-auto">
-    <h1 class="text-5xl md:text-6xl font-bold leading-tight mb-6">
-      You’ve Been Scammed.<br>
-      <span class="text-blue-300">You Are Not Alone.</span>
+  <div class="absolute inset-0 bg-gradient-to-b from-ink/70 via-ink/75 to-ink/90"></div>
+
+  <div class="relative z-10 text-center px-6 max-w-3xl mx-auto py-24">
+    <p class="uppercase tracking-[0.2em] text-sm text-blue-200 mb-6">You are not alone</p>
+    <h1 class="font-display text-4xl md:text-6xl font-semibold leading-tight mb-6">
+      Been scammed? <br>Take the next step here.
     </h1>
-    <p class="text-xl md:text-2xl mb-10 max-w-2xl mx-auto">
-      MyScamShield is a safe and confidential platform to report scams, get support, and start your recovery journey.
+    <p class="text-lg md:text-xl mb-10 max-w-2xl mx-auto text-slate-100">
+      MyScamShield is a free, confidential place to report what happened, understand
+      the warning signs, and get guided to the right authorities by trained volunteers.
     </p>
     <div class="flex flex-col sm:flex-row gap-4 justify-center">
-      <a href="/report" class="bg-white text-blue-900 px-12 py-5 rounded-2xl text-xl font-semibold hover:bg-gray-100 transition">
-        Report My Scam Now
+      <a href="/report" class="bg-white text-ink px-10 py-4 rounded-2xl text-lg font-semibold hover:bg-slate-100 transition">
+        Report a scam
       </a>
-     <button onclick="openSupportChat()" 
-        class="border-2 border-white text-white px-12 py-5 rounded-2xl text-xl font-semibold hover:bg-white/10 transition">
-  Speak to Support
-</button>
+      <button onclick="openChat()" class="border-2 border-white/80 text-white px-10 py-4 rounded-2xl text-lg font-semibold hover:bg-white/10 transition">
+        Talk to a volunteer
+      </button>
     </div>
+    <p class="mt-6 text-sm text-blue-200">Free • Confidential • We never ask you for money</p>
   </div>
-</div>
+</section>
 
-<!-- AI Detector Card -->
-<div class="max-w-6xl mx-auto px-6 -mt-8 relative z-10 pb-12">
-  <a href="/detector" class="group block bg-white rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all">
-    <img src="{{ url_for('static', filename='images/ai-detector.jpg') }}" 
-         alt="AI Scam Detector" 
-         class="w-full h-80 object-cover">
-    <div class="p-10">
-      <h3 class="text-3xl font-bold text-blue-900 mb-4">Suspect a Potential Fraud?</h3>
-      <p class="text-xl text-gray-700 leading-relaxed">
-        Have doubts about an investment, payment, website, or offer?<br>
-        <strong>Use our specially trained AI</strong> to analyze it instantly and protect yourself from scams.
-      </p>
-      <div class="mt-6 inline-flex items-center gap-3 text-blue-600 font-semibold group-hover:gap-4 transition">
-        Try AI Detector Now →
+<!-- Self-Check card -->
+<section class="max-w-5xl mx-auto px-6 -mt-10 relative z-10 pb-4">
+  <a href="/self-check" class="group block bg-white rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all">
+    <div class="md:flex">
+      <img src="{{ url_for('static', filename='images/ai-detector.jpg') }}" alt=""
+           class="w-full md:w-1/2 h-64 md:h-auto object-cover">
+      <div class="p-8 md:p-10 md:w-1/2 flex flex-col justify-center">
+        <span class="text-sm font-semibold text-brand uppercase tracking-wide mb-3">Guided self-check</span>
+        <h3 class="font-display text-2xl md:text-3xl font-semibold text-ink mb-3">Not sure if it's a scam?</h3>
+        <p class="text-slate-600 leading-relaxed">
+          Answer a few plain questions about an offer, message, or request. You'll get an
+          honest read on the warning signs and clear next steps. It's a transparent
+          checklist — not AI, and not a verdict.
+        </p>
+        <span class="mt-5 inline-flex items-center gap-2 text-brand font-semibold group-hover:gap-3 transition">
+          Start the self-check →
+        </span>
       </div>
     </div>
   </a>
-</div>
+</section>
 
-<!-- Money Lost Stats -->
-<div class="max-w-6xl mx-auto px-6 py-16">
-  <h2 class="text-3xl font-bold text-center mb-12">Estimated Losses in 2026 (so far)</h2>
-  <div class="grid md:grid-cols-4 gap-6">
-    <div class="bg-white p-8 rounded-3xl text-center shadow hover:shadow-lg transition">
-      <p class="text-5xl font-bold text-red-600">$487M</p>
-      <p class="mt-3 font-medium">Investment & Crypto Scams</p>
+<!-- Why this matters (honest, no invented figures) -->
+<section class="max-w-5xl mx-auto px-6 py-16">
+  <h2 class="font-display text-3xl font-semibold text-center text-ink mb-4">The scams we see most</h2>
+  <p class="text-center text-slate-500 max-w-2xl mx-auto mb-12">
+    Scams cost people billions every year worldwide. These are the categories victims
+    most often come to us about — knowing the patterns is the first line of defense.
+  </p>
+  <div class="grid sm:grid-cols-2 md:grid-cols-4 gap-5">
+    {% set cats = [
+      ('Investment & crypto', 'Guaranteed or unusually high returns, pressure to “invest now.”'),
+      ('Romance', 'Trust built online, then a sudden emergency and a request for money.'),
+      ('Tech support', 'Fake “security” alerts asking for access or payment to “fix” a device.'),
+      ('Impersonation', 'Callers posing as your bank, a government body, or a company.')
+    ] %}
+    {% for title, desc in cats %}
+    <div class="bg-white p-6 rounded-3xl shadow-sm hover:shadow-md transition">
+      <h3 class="font-semibold text-ink mb-2">{{ title }}</h3>
+      <p class="text-sm text-slate-600 leading-relaxed">{{ desc }}</p>
     </div>
-    <div class="bg-white p-8 rounded-3xl text-center shadow hover:shadow-lg transition">
-      <p class="text-5xl font-bold text-red-600">$312M</p>
-      <p class="mt-3 font-medium">Romance Scams</p>
-    </div>
-    <div class="bg-white p-8 rounded-3xl text-center shadow hover:shadow-lg transition">
-      <p class="text-5xl font-bold text-red-600">$198M</p>
-      <p class="mt-3 font-medium">Tech Support Scams</p>
-    </div>
-    <div class="bg-white p-8 rounded-3xl text-center shadow hover:shadow-lg transition">
-      <p class="text-5xl font-bold text-red-600">$145M</p>
-      <p class="mt-3 font-medium">Impersonation Scams</p>
-    </div>
+    {% endfor %}
   </div>
-</div>
+</section>
 
-<!-- Service Cards -->
-<div class="max-w-6xl mx-auto px-6 grid md:grid-cols-3 gap-8 pb-20">
-  <a href="/support" class="group bg-white rounded-3xl overflow-hidden shadow hover:shadow-2xl transition-all">
-    <img src="{{ url_for('static', filename='images/card1-support.jpg') }}" class="w-full h-64 object-cover">
-    <div class="p-8">
-      <h3 class="text-2xl font-semibold mb-3">Confidential Support</h3>
-      <p class="text-gray-600">Talk to trained professionals who understand your pain.</p>
+<!-- Service cards -->
+<section class="max-w-6xl mx-auto px-6 grid md:grid-cols-3 gap-6 pb-20">
+  <a href="/support" class="group bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all">
+    <img src="{{ url_for('static', filename='images/card1-support.jpg') }}" alt="" class="w-full h-52 object-cover">
+    <div class="p-7">
+      <h3 class="text-xl font-semibold text-ink mb-2">Confidential support</h3>
+      <p class="text-slate-600 text-sm">Talk it through with a trained volunteer who will listen and guide you.</p>
     </div>
   </a>
-
-  <a href="/report" class="group bg-white rounded-3xl overflow-hidden shadow hover:shadow-2xl transition-all">
-    <img src="{{ url_for('static', filename='images/card2-report.jpg') }}" class="w-full h-64 object-cover">
-    <div class="p-8">
-      <h3 class="text-2xl font-semibold mb-3">Report Your Scam</h3>
-      <p class="text-gray-600">Submit your case and get a personal support ticket.</p>
+  <a href="/report" class="group bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all">
+    <img src="{{ url_for('static', filename='images/card2-report.jpg') }}" alt="" class="w-full h-52 object-cover">
+    <div class="p-7">
+      <h3 class="text-xl font-semibold text-ink mb-2">Report your scam</h3>
+      <p class="text-slate-600 text-sm">Tell us what happened and get a reference number to follow up.</p>
     </div>
   </a>
-
-  <a href="/resources" class="group bg-white rounded-3xl overflow-hidden shadow hover:shadow-2xl transition-all">
-    <img src="{{ url_for('static', filename='images/card3-resources.jpg') }}" class="w-full h-64 object-cover">
-    <div class="p-8">
-      <h3 class="text-2xl font-semibold mb-3">Learn & Protect</h3>
-      <p class="text-gray-600">Stay safe from future scams with expert guidance.</p>
+  <a href="/resources" class="group bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all">
+    <img src="{{ url_for('static', filename='images/card3-resources.jpg') }}" alt="" class="w-full h-52 object-cover">
+    <div class="p-7">
+      <h3 class="text-xl font-semibold text-ink mb-2">Learn &amp; protect</h3>
+      <p class="text-slate-600 text-sm">Prevention tips and the official places to report, wherever you are.</p>
     </div>
   </a>
-</div>
+</section>
 {% endblock %}
