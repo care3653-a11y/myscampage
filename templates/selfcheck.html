@@ -1,236 +1,227 @@
 {% extends "base.html" %}
 {% block title %}Scam Self-Check — MyScamShield{% endblock %}
 {% block content %}
-<div class="max-w-2xl mx-auto px-6 py-14">
+<div class="max-w-2xl mx-auto px-6 py-12">
 
-  <div class="text-center mb-8">
+  <div class="text-center mb-6">
     <h1 class="font-display text-4xl font-semibold text-ink">Scam self-check</h1>
-    <p class="text-slate-600 mt-4">
-      Pick what you're worried about and answer a few plain questions. You'll get an
-      honest read on the warning signs.
-    </p>
+    <p class="text-slate-600 mt-3">A few short questions to help you spot the warning signs.</p>
     <p class="text-xs text-slate-500 mt-3 bg-slate-100 rounded-full inline-block px-4 py-1.5">
-      This is a transparent checklist based on common scam patterns — not AI, and not a verdict.
+      A guided checklist — not AI, and not a verdict.
     </p>
   </div>
 
-  <!-- Step 1: choose category -->
-  <div id="step-category" class="bg-white rounded-3xl shadow-sm p-8">
-    <label class="block text-lg font-semibold text-ink mb-5">What are you checking?</label>
-    <div id="categoryGrid" class="grid sm:grid-cols-2 gap-3"></div>
-  </div>
-
-  <!-- Step 2: questions -->
-  <div id="step-questions" class="hidden bg-white rounded-3xl shadow-sm p-8">
-    <button onclick="restart()" class="text-sm text-brand mb-6">← Choose a different category</button>
-    <h2 id="qCategoryTitle" class="font-display text-2xl font-semibold text-ink mb-6"></h2>
-    <div id="questionList" class="space-y-5"></div>
-    <button onclick="showResult()" class="mt-8 w-full bg-brand text-white py-4 rounded-2xl text-lg font-semibold hover:brightness-110 transition">
-      See my results
-    </button>
-  </div>
-
-  <!-- Step 3: results -->
-  <div id="step-result" class="hidden">
-    <div id="resultCard" class="bg-white rounded-3xl shadow-sm p-8 border-t-4"></div>
-
-    <!-- Always-on next steps -->
-    <div class="bg-white rounded-3xl shadow-sm p-8 mt-6">
-      <h3 class="font-display text-xl font-semibold text-ink mb-4">What to do next</h3>
-      <ol class="space-y-3 text-slate-700 list-decimal pl-5">
-        <li><strong>Stop all contact and payments.</strong> Don't send money, share codes, or grant remote access.</li>
-        <li><strong>Tell your bank or payment provider immediately</strong> — they may be able to stop or reverse a transfer.</li>
-        <li><strong>Change passwords</strong> on any account that may be exposed, and turn on two-factor authentication.</li>
-        <li><strong>Report it</strong> to the authorities below. Reporting helps others even if you're unsure.</li>
-        <li><strong>Keep the evidence</strong> — messages, screenshots, receipts, phone numbers, and links.</li>
-      </ol>
-      <p class="mt-5 text-sm text-slate-500">
-        No legitimate service — including this one — will ever ask you to pay to recover
-        your money. Anyone who does is scamming you.
-      </p>
+  <!-- Chat -->
+  <div class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
+    <div class="bg-ink text-white px-6 py-4 flex items-center gap-3">
+      <div class="w-9 h-9 rounded-full bg-white/15 flex items-center justify-center text-lg">🛡️</div>
+      <div>
+        <p class="font-semibold leading-tight">Self-check assistant</p>
+        <p class="text-xs text-blue-200">Private • nothing you tap is stored</p>
+      </div>
     </div>
-
-    <!-- Reporting channels -->
-    <div class="bg-slate-50 rounded-3xl p-8 mt-6 border border-slate-200">
-      <h3 class="font-display text-xl font-semibold text-ink mb-2">Where to report</h3>
-      <p class="text-sm text-slate-600 mb-5">Start with your local police and your bank. Then report to the relevant body for your country:</p>
-      <ul class="space-y-2 text-sm">
-        <li>🌍 <strong>International consumer fraud:</strong> <a class="text-brand hover:underline" href="https://econsumer.gov" target="_blank" rel="noopener">econsumer.gov</a></li>
-        <li>💻 <strong>Online / internet crime:</strong> <a class="text-brand hover:underline" href="https://www.ic3.gov" target="_blank" rel="noopener">ic3.gov</a></li>
-        <li>🇺🇸 <strong>United States:</strong> <a class="text-brand hover:underline" href="https://reportfraud.ftc.gov" target="_blank" rel="noopener">reportfraud.ftc.gov</a></li>
-        <li>🇬🇧 <strong>United Kingdom:</strong> <a class="text-brand hover:underline" href="https://www.actionfraud.police.uk" target="_blank" rel="noopener">Action Fraud</a></li>
-        <li>🇦🇺 <strong>Australia:</strong> <a class="text-brand hover:underline" href="https://www.scamwatch.gov.au" target="_blank" rel="noopener">Scamwatch</a></li>
-        <li>🇨🇦 <strong>Canada:</strong> <a class="text-brand hover:underline" href="https://antifraudcentre-centreantifraude.ca" target="_blank" rel="noopener">Canadian Anti-Fraud Centre</a></li>
-      </ul>
-      <p class="text-xs text-slate-500 mt-4">Not listed? Search your country's name plus “report fraud” or ask a volunteer and we'll point you to the right place.</p>
-    </div>
-
-    <div class="flex flex-col sm:flex-row gap-4 mt-6">
-      <a href="/report" class="flex-1 text-center bg-brand text-white py-4 rounded-2xl font-semibold hover:brightness-110 transition">Report this to us</a>
-      <button onclick="openChat()" class="flex-1 border-2 border-slate-300 text-slate-700 py-4 rounded-2xl font-semibold hover:bg-white transition">Talk to a volunteer</button>
-    </div>
-    <button onclick="restart()" class="mt-4 w-full text-slate-500 text-sm underline">Check something else</button>
+    <div id="chatThread" class="h-[540px] overflow-y-auto px-5 py-6 space-y-3 bg-slate-50/60"></div>
   </div>
 </div>
 
+<style>
+  .dot{width:6px;height:6px;background:#94a3b8;border-radius:9999px;display:inline-block;animation:blink 1.2s infinite both;}
+  .dot:nth-child(2){animation-delay:.2s}
+  .dot:nth-child(3){animation-delay:.4s}
+  @keyframes blink{0%,80%,100%{opacity:.3}40%{opacity:1}}
+  @media (prefers-reduced-motion: reduce){ .dot{animation:none} }
+</style>
+
 <script>
-// Transparent, honest logic. Each "yes" is a known warning sign; the more that
-// apply, the stronger the concern. No hidden scoring, no pretend AI.
 const CATEGORIES = {
-  investment: {
-    label: "Investment or crypto offer",
-    questions: [
-      "Are they promising guaranteed, fixed, or unusually high returns?",
-      "Is there pressure to act fast or a “limited-time” opportunity?",
-      "Were you contacted out of the blue (DM, message, or ad)?",
-      "Are you asked to pay in crypto, gift cards, or hard-to-reverse transfers?",
-      "Can you not withdraw your funds, or are new fees required to withdraw?",
-      "Is the platform or “advisor” unregistered or hard to verify?"
-    ]
-  },
-  romance: {
-    label: "Romance or online relationship",
-    questions: [
-      "Have you never met this person in real life or by live video?",
-      "Do they avoid video calls or in-person meetings with excuses?",
-      "Has the relationship moved to intense feelings very quickly?",
-      "Have they asked you for money, gift cards, or crypto?",
-      "Is there a sudden emergency (medical, travel, customs) needing cash?",
-      "Have they asked you to keep the relationship secret?"
-    ]
-  },
-  tech: {
-    label: "Tech support or account security",
-    questions: [
-      "Did an alert, call, or pop-up say your device or account is compromised?",
-      "Are they asking to remotely access or control your device?",
-      "Do they want passwords, one-time codes, or banking details?",
-      "Are you told to buy gift cards or pay to “fix” the problem?",
-      "Did they contact you first, claiming to be a known company?",
-      "Are you pressured not to hang up or not to tell anyone?"
-    ]
-  },
-  payment: {
-    label: "Payment or money request",
-    questions: [
-      "Are you asked to pay a fee upfront to receive a prize, loan, or refund?",
-      "Do they want payment by gift card, crypto, or wire transfer specifically?",
-      "Is there urgency or a threat if you don't pay right now?",
-      "Are they asking you to move money on someone else's behalf?",
-      "Did the request come from an unexpected or spoofed-looking contact?",
-      "Does the payee name not match the company they claim to be?"
-    ]
-  },
-  job: {
-    label: "Job or work-from-home offer",
-    questions: [
-      "Were you offered the job without a real interview?",
-      "Are you asked to pay for training, equipment, or a “starter kit”?",
-      "Does it involve receiving money and forwarding it on?",
-      "Is the pay unusually high for very little work?",
-      "Are they using free email addresses instead of a company domain?",
-      "Are you pushed to start or pay before anything is in writing?"
-    ]
-  },
-  message: {
-    label: "Suspicious message, link, or website",
-    questions: [
-      "Did it arrive unexpectedly asking you to click a link or log in?",
-      "Does the sender address or web address look slightly “off”?",
-      "Does it create urgency (“account suspended”, “package held”)?",
-      "Does it ask for passwords, codes, or payment details?",
-      "Are there spelling, grammar, or formatting mistakes?",
-      "Does the link go somewhere different from the real company's site?"
-    ]
-  }
+  investment: { label: "Investment or crypto offer", questions: [
+    "Are they promising guaranteed, fixed, or unusually high returns?",
+    "Is there pressure to act fast or a “limited-time” opportunity?",
+    "Were you contacted out of the blue (DM, message, or ad)?",
+    "Are you asked to pay in crypto, gift cards, or hard-to-reverse transfers?",
+    "Can you not withdraw your funds, or are new fees required to withdraw?",
+    "Is the platform or “advisor” unregistered or hard to verify?"
+  ]},
+  romance: { label: "Romance or online relationship", questions: [
+    "Have you never met this person in real life or by live video?",
+    "Do they avoid video calls or in-person meetings with excuses?",
+    "Has the relationship moved to intense feelings very quickly?",
+    "Have they asked you for money, gift cards, or crypto?",
+    "Is there a sudden emergency (medical, travel, customs) needing cash?",
+    "Have they asked you to keep the relationship secret?"
+  ]},
+  tech: { label: "Tech support or account security", questions: [
+    "Did an alert, call, or pop-up say your device or account is compromised?",
+    "Are they asking to remotely access or control your device?",
+    "Do they want passwords, one-time codes, or banking details?",
+    "Are you told to buy gift cards or pay to “fix” the problem?",
+    "Did they contact you first, claiming to be a known company?",
+    "Are you pressured not to hang up or not to tell anyone?"
+  ]},
+  payment: { label: "Payment or money request", questions: [
+    "Are you asked to pay a fee upfront to receive a prize, loan, or refund?",
+    "Do they want payment by gift card, crypto, or wire transfer specifically?",
+    "Is there urgency or a threat if you don't pay right now?",
+    "Are they asking you to move money on someone else's behalf?",
+    "Did the request come from an unexpected or spoofed-looking contact?",
+    "Does the payee name not match the company they claim to be?"
+  ]},
+  job: { label: "Job or work-from-home offer", questions: [
+    "Were you offered the job without a real interview?",
+    "Are you asked to pay for training, equipment, or a “starter kit”?",
+    "Does it involve receiving money and forwarding it on?",
+    "Is the pay unusually high for very little work?",
+    "Are they using free email addresses instead of a company domain?",
+    "Are you pushed to start or pay before anything is in writing?"
+  ]},
+  message: { label: "Suspicious message, link, or website", questions: [
+    "Did it arrive unexpectedly asking you to click a link or log in?",
+    "Does the sender address or web address look slightly “off”?",
+    "Does it create urgency (“account suspended”, “package held”)?",
+    "Does it ask for passwords, codes, or payment details?",
+    "Are there spelling, grammar, or formatting mistakes?",
+    "Does the link go somewhere different from the real company's site?"
+  ]}
 };
 
-let current = null;
-let answers = [];
+const REDUCE = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const chat = document.getElementById('chatThread');
+let state = {};
 
-function buildCategories() {
-  const grid = document.getElementById('categoryGrid');
-  grid.innerHTML = '';
-  Object.entries(CATEGORIES).forEach(([key, cat]) => {
-    const btn = document.createElement('button');
-    btn.className = "text-left p-5 rounded-2xl border border-slate-200 hover:border-brand hover:bg-blue-50/40 transition font-medium text-ink";
-    btn.textContent = cat.label;
-    btn.onclick = () => chooseCategory(key);
-    grid.appendChild(btn);
-  });
+const scrollDown = () => { chat.scrollTop = chat.scrollHeight; };
+const delay = ms => new Promise(r => setTimeout(r, REDUCE ? 0 : ms));
+
+function userBubble(text) {
+  const row = document.createElement('div');
+  row.className = 'flex justify-end';
+  row.innerHTML = `<div class="max-w-[80%] bg-brand text-white px-4 py-2.5 rounded-2xl rounded-br-md">${text}</div>`;
+  chat.appendChild(row); scrollDown();
 }
 
-function chooseCategory(key) {
-  current = key;
-  const cat = CATEGORIES[key];
-  answers = new Array(cat.questions.length).fill(false);
-  document.getElementById('qCategoryTitle').textContent = cat.label;
-
-  const list = document.getElementById('questionList');
-  list.innerHTML = '';
-  cat.questions.forEach((q, i) => {
-    const wrap = document.createElement('div');
-    wrap.className = "flex items-start gap-3 p-4 rounded-2xl bg-slate-50";
-    wrap.innerHTML = `
-      <input type="checkbox" id="q${i}" class="mt-1 w-5 h-5 accent-brand cursor-pointer">
-      <label for="q${i}" class="text-slate-700 cursor-pointer leading-relaxed">${q}</label>`;
-    wrap.querySelector('input').addEventListener('change', e => answers[i] = e.target.checked);
-    list.appendChild(wrap);
-  });
-
-  swap('step-questions');
+function botBubble(html) {
+  const row = document.createElement('div');
+  row.className = 'flex justify-start';
+  row.innerHTML = `<div class="max-w-[88%] bg-white border border-slate-200 text-slate-800 px-4 py-3 rounded-2xl rounded-bl-md leading-relaxed">${html}</div>`;
+  chat.appendChild(row); scrollDown();
 }
 
-function showResult() {
-  const yes = answers.filter(Boolean).length;
-  const total = answers.length;
-  const card = document.getElementById('resultCard');
+async function botSay(html, ms = 700) {
+  const t = document.createElement('div');
+  t.className = 'flex justify-start';
+  t.innerHTML = `<div class="bg-white border border-slate-200 px-4 py-3 rounded-2xl rounded-bl-md flex gap-1"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>`;
+  chat.appendChild(t); scrollDown();
+  await delay(ms);
+  t.remove();
+  botBubble(html);
+}
 
-  let level, color, headline, body;
-  if (yes >= Math.ceil(total / 2)) {
-    level = "High warning signs";
-    color = "#dc2626"; // red
+function options(items) {
+  const row = document.createElement('div');
+  row.className = 'flex flex-wrap gap-2 justify-end pt-1';
+  items.forEach(it => {
+    const b = document.createElement('button');
+    b.className = (it.cls || 'bg-white border border-brand text-brand') + ' px-4 py-2 rounded-full text-sm font-medium hover:brightness-95 transition';
+    b.textContent = it.label;
+    b.onclick = () => { row.remove(); it.onClick(); };
+    row.appendChild(b);
+  });
+  chat.appendChild(row); scrollDown();
+}
+
+async function start() {
+  chat.innerHTML = '';
+  state = { category: null, qIndex: 0, yes: 0, unsure: 0, total: 0 };
+  await botSay("Hi — I'm here to help you check for scam warning signs. I'll ask a few short questions.", 500);
+  await botSay("Answer as honestly as you can. Ready? What would you like to check?", 700);
+  options(Object.entries(CATEGORIES).map(([key, cat]) => ({
+    label: cat.label, onClick: () => pickCategory(key)
+  })));
+}
+
+async function pickCategory(key) {
+  userBubble(CATEGORIES[key].label);
+  state.category = key; state.qIndex = 0; state.yes = 0; state.unsure = 0;
+  state.total = CATEGORIES[key].questions.length;
+  await botSay("Thanks. If you're not sure about a question, just say so — that's useful too.", 600);
+  askQuestion();
+}
+
+async function askQuestion() {
+  const cat = CATEGORIES[state.category];
+  if (state.qIndex >= cat.questions.length) return finish();
+  const q = cat.questions[state.qIndex];
+  await botSay(`<span class="text-xs text-slate-400 block mb-1">Question ${state.qIndex + 1} of ${cat.questions.length}</span>${q}`, 650);
+  options([
+    { label: 'Yes', cls: 'bg-brand text-white border border-brand', onClick: () => answer('yes') },
+    { label: 'No', cls: 'bg-white border border-slate-300 text-slate-700', onClick: () => answer('no') },
+    { label: 'Not sure', cls: 'bg-white border border-slate-300 text-slate-500', onClick: () => answer('unsure') }
+  ]);
+}
+
+function answer(kind) {
+  userBubble(kind === 'yes' ? 'Yes' : kind === 'no' ? 'No' : 'Not sure');
+  if (kind === 'yes') state.yes++;
+  else if (kind === 'unsure') state.unsure++;
+  state.qIndex++;
+  askQuestion();
+}
+
+async function finish() {
+  const { yes, unsure, total } = state;
+  const weighted = yes + 0.5 * unsure;   // "Not sure" counts as a mild flag
+
+  let color, headline, body;
+  if (weighted >= Math.ceil(total / 2)) {
+    color = "#dc2626";
     headline = "This has strong signs of a scam.";
-    body = "Several classic red flags are present. Treat this as very likely fraudulent: don't send money, share codes, or continue contact, and report it using the steps below.";
-  } else if (yes >= 2) {
-    level = "Some warning signs";
-    color = "#d97706"; // amber
+    body = "Several classic red flags are present. Please treat this as very likely fraudulent — don't send money, share codes, or keep contact.";
+  } else if (weighted >= 2) {
+    color = "#d97706";
     headline = "Be careful — there are real warning signs here.";
-    body = "A few things match common scam tactics. Slow down, verify independently through official contact details you find yourself, and don't act under pressure.";
-  } else if (yes === 1) {
-    level = "One warning sign";
+    body = "A few things match common scam tactics. Slow down and verify independently, using contact details you look up yourself.";
+  } else if (weighted >= 1) {
     color = "#d97706";
     headline = "Mostly clear, but stay alert.";
-    body = "One thing stood out. It may be fine, but verify anything involving money or personal details before you proceed.";
+    body = "Something stood out. It may be fine, but verify anything involving money or personal details before you act.";
   } else {
-    level = "No red flags selected";
-    color = "#0e9f6e"; // green
+    color = "#0e9f6e";
     headline = "Nothing here matched the usual red flags.";
-    body = "That's reassuring, but it isn't a guarantee. If something still feels wrong, trust that instinct and verify independently.";
+    body = "That's reassuring, though not a guarantee. If something still feels off, trust that instinct and verify.";
   }
 
-  card.style.borderTopColor = color;
-  card.innerHTML = `
-    <p class="text-sm font-semibold uppercase tracking-wide mb-2" style="color:${color}">${level} — ${yes} of ${total}</p>
-    <h2 class="font-display text-2xl font-semibold text-ink mb-3">${headline}</h2>
-    <p class="text-slate-700 leading-relaxed">${body}</p>`;
+  const tally = `You answered <strong>Yes</strong> to ${yes} of ${total}` +
+    (unsure ? `, and were unsure on ${unsure}.` : `.`);
 
-  swap('step-result');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  await botSay(`<span class="block text-xs font-semibold uppercase tracking-wide mb-1" style="color:${color}">Result</span>
+    <span class="block font-display text-lg font-semibold text-ink mb-1">${headline}</span>
+    ${body}<br><span class="text-sm text-slate-500 mt-2 inline-block">${tally}</span>`, 900);
+
+  await botSay(`Here's what I'd do next:
+    <ol class="list-decimal pl-5 mt-2 space-y-1 text-sm">
+      <li>Stop all contact and payments — don't send money, codes, or remote access.</li>
+      <li>Tell your bank or payment provider right away; they may be able to stop a transfer.</li>
+      <li>Change passwords on any exposed account and turn on two-factor authentication.</li>
+      <li>Keep the evidence — messages, screenshots, receipts, numbers, and links.</li>
+    </ol>`, 900);
+
+  await botSay(`Where to report — start with your local police and your bank, then:
+    <ul class="mt-2 space-y-1 text-sm">
+      <li>🌍 <a class="text-brand underline" href="https://econsumer.gov" target="_blank" rel="noopener">econsumer.gov</a> (international)</li>
+      <li>💻 <a class="text-brand underline" href="https://www.ic3.gov" target="_blank" rel="noopener">ic3.gov</a> (online crime)</li>
+      <li>🇺🇸 <a class="text-brand underline" href="https://reportfraud.ftc.gov" target="_blank" rel="noopener">reportfraud.ftc.gov</a></li>
+      <li>🇬🇧 <a class="text-brand underline" href="https://www.actionfraud.police.uk" target="_blank" rel="noopener">Action Fraud</a> · 🇦🇺 <a class="text-brand underline" href="https://www.scamwatch.gov.au" target="_blank" rel="noopener">Scamwatch</a> · 🇨🇦 <a class="text-brand underline" href="https://antifraudcentre-centreantifraude.ca" target="_blank" rel="noopener">CAFC</a></li>
+    </ul>
+    <span class="text-xs text-slate-500 mt-2 inline-block">Remember: no genuine service ever charges a fee to recover your money.</span>`, 900);
+
+  await botSay(`That's the end of the check. If you have any further questions, you can continue to talk with one of our trained volunteers for support — you don't have to deal with this alone. 💙`, 800);
+
+  options([
+    { label: 'Talk to a volunteer', cls: 'bg-brand text-white border border-brand', onClick: () => openChat() },
+    { label: 'Report this to us', cls: 'bg-white border border-slate-300 text-slate-700', onClick: () => location.href = '/report' },
+    { label: 'Check something else', cls: 'bg-white border border-slate-300 text-slate-500', onClick: () => start() }
+  ]);
 }
 
-function restart() {
-  current = null; answers = [];
-  swap('step-category');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function swap(id) {
-  ['step-category','step-questions','step-result'].forEach(s => {
-    document.getElementById(s).classList.toggle('hidden', s !== id);
-  });
-}
-
-buildCategories();
+start();
 </script>
 {% endblock %}
