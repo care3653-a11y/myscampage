@@ -1,52 +1,53 @@
 {% extends "base.html" %}
+{% block title %}Support — MyScamShield{% endblock %}
 {% block content %}
 
-<!-- Hero Section with Background -->
-<div class="relative h-[70vh] flex items-center justify-center text-white overflow-hidden">
-  <img src="{{ url_for('static', filename='images/hero.jpg') }}" 
-       alt="Support Background" 
-       class="absolute inset-0 w-full h-full object-cover">
-  <div class="absolute inset-0 bg-gradient-to-b from-black/50 to-black/70"></div>
-  
-  <div class="relative z-10 text-center px-6 max-w-3xl mx-auto">
-    <h1 class="text-5xl md:text-6xl font-bold leading-tight mb-6">
-      Confidential Support
-    </h1>
-    <p class="text-2xl mb-10">
-      You are safe here. Our team is ready to listen and help you through this difficult time.
-    </p>
-    <button onclick="openTawkTo()" class="bg-white text-blue-900 px-10 py-5 rounded-2xl text-lg font-semibold hover:bg-gray-100">
-      Start Support Session
-    </button>
+<section class="relative h-[60vh] flex items-center justify-center text-white overflow-hidden">
+  <img src="{{ url_for('static', filename='images/hero.jpg') }}" alt="" aria-hidden="true" class="absolute inset-0 w-full h-full object-cover">
+  <div class="absolute inset-0 bg-gradient-to-b from-ink/70 to-ink/90"></div>
+  <div class="relative z-10 text-center px-6 max-w-2xl mx-auto">
+    <h1 class="font-display text-4xl md:text-5xl font-semibold mb-5">You're safe here</h1>
+    <p class="text-lg text-slate-100 mb-8">Being scammed is stressful and isolating. Our trained volunteers are here to listen and help you find your footing.</p>
+    <button onclick="openChat()" class="bg-white text-ink px-9 py-4 rounded-2xl text-lg font-semibold hover:bg-slate-100 transition">Start a chat</button>
   </div>
-</div>
+</section>
 
-<!-- Content -->
-<div class="max-w-4xl mx-auto px-6 py-16">
-  <div class="prose prose-lg mx-auto text-gray-700">
-    <h2 class="text-3xl font-semibold text-blue-900 mb-8">How We Support You</h2>
-    <p class="text-lg">Being scammed can be incredibly stressful and isolating. Our trained support team provides:</p>
-    
-    <ul class="list-disc pl-6 space-y-4 mt-8 text-lg">
-      <li>Non-judgmental listening and emotional validation</li>
-      <li>Step-by-step guidance on what to do next</li>
-      <li>Help preparing reports for police and financial institutions</li>
-      <li>Resources for financial recovery and mental wellbeing</li>
-      <li>Follow-up support through your personal ticket</li>
-    </ul>
+<section class="max-w-3xl mx-auto px-6 py-16">
+  <h2 class="font-display text-3xl font-semibold text-ink mb-6">How our volunteers help</h2>
+  <p class="text-slate-700 text-lg mb-6">MyScamShield is run by trained volunteers. Here's exactly what that means — and what it doesn't:</p>
 
-    <div class="mt-16 bg-blue-50 p-10 rounded-3xl text-center">
-      <p class="text-2xl font-medium">"You're taking the first brave step by reaching out. We're proud of you."</p>
-      <p class="mt-6 text-blue-600">- MyScamShield Support Team</p>
+  <div class="grid md:grid-cols-2 gap-6">
+    <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-6">
+      <h3 class="font-semibold text-emerald-800 mb-3">What we do</h3>
+      <ul class="space-y-2 text-sm text-slate-700 list-disc pl-5">
+        <li>Listen without judgment</li>
+        <li>Help you understand what likely happened</li>
+        <li>Explain your options step by step</li>
+        <li>Guide you to the right police, bank, and reporting channels</li>
+        <li>Help you prepare the information you'll need to report</li>
+        <li>Point you to resources for financial and emotional recovery</li>
+      </ul>
+    </div>
+    <div class="bg-red-50 border border-red-200 rounded-2xl p-6">
+      <h3 class="font-semibold text-red-800 mb-3">What we don't do</h3>
+      <ul class="space-y-2 text-sm text-slate-700 list-disc pl-5">
+        <li>We are <strong>not</strong> law enforcement</li>
+        <li>We <strong>cannot</strong> recover or refund your money</li>
+        <li>We will <strong>never</strong> ask you for payment</li>
+        <li>We won't ask for passwords or one-time codes</li>
+        <li>We won't guarantee any outcome</li>
+      </ul>
     </div>
   </div>
-</div>
 
-<script>
-  function openTawkTo() {
-    if (typeof Tawk_API !== 'undefined') {
-      Tawk_API.toggle();
-    }
-  }
-</script>
+  <div class="mt-10 bg-blue-50 rounded-2xl p-8 text-center">
+    <p class="text-lg text-ink">“Reaching out is a brave first step. You don't have to figure this out alone.”</p>
+    <p class="mt-3 text-brand text-sm">— The MyScamShield volunteer team</p>
+  </div>
+
+  <p class="mt-8 text-sm text-slate-500 text-center">
+    Anyone contacting you promising to recover your funds for an upfront fee is running a
+    follow-up scam. Genuine help never costs you money.
+  </p>
+</section>
 {% endblock %}

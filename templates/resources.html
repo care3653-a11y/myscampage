@@ -1,33 +1,68 @@
 {% extends "base.html" %}
+{% block title %}Resources — MyScamShield{% endblock %}
 {% block content %}
-<div class="max-w-4xl mx-auto">
-  <h1 class="text-4xl font-bold text-blue-900 mb-8">Resources & Prevention</h1>
-  
-  <div class="grid md:grid-cols-2 gap-8">
-    <div class="bg-white p-8 rounded-3xl shadow">
-      <h3 class="font-semibold text-2xl mb-4">Latest Scam Alerts</h3>
-      <ul class="space-y-6">
-        <li class="border-l-4 border-red-500 pl-4">
-          <strong>Crypto Investment Scams</strong> — Fake platforms promising high returns
-        </li>
-        <li class="border-l-4 border-red-500 pl-4">
-          <strong>Romance Scams</strong> — Scammers building trust then asking for money
-        </li>
-        <li class="border-l-4 border-red-500 pl-4">
-          <strong>Government Impersonation</strong> — Fake calls from police or banks
-        </li>
+<div class="max-w-4xl mx-auto px-6 py-14">
+  <h1 class="font-display text-4xl font-semibold text-ink mb-3">Resources &amp; prevention</h1>
+  <p class="text-slate-600 mb-10">Know the patterns, protect yourself, and find the official places to report — wherever you are.</p>
+
+  <div class="grid md:grid-cols-2 gap-6 mb-6">
+    <div class="bg-white p-7 rounded-3xl shadow-sm">
+      <h3 class="font-semibold text-xl text-ink mb-4">Common scam alerts</h3>
+      <ul class="space-y-4 text-sm">
+        <li class="border-l-4 border-red-500 pl-4"><strong>Crypto &amp; investment</strong> — fake platforms promising high or guaranteed returns.</li>
+        <li class="border-l-4 border-red-500 pl-4"><strong>Romance</strong> — trust built over time, then an urgent request for money.</li>
+        <li class="border-l-4 border-red-500 pl-4"><strong>Impersonation</strong> — fake calls or messages from “your bank,” police, or a company.</li>
+        <li class="border-l-4 border-red-500 pl-4"><strong>Recovery scams</strong> — someone promising to get your lost money back, for a fee. Always fake.</li>
       </ul>
     </div>
 
-    <div class="bg-white p-8 rounded-3xl shadow">
-      <h3 class="font-semibold text-2xl mb-4">How to Protect Yourself</h3>
-      <ul class="space-y-4 text-sm">
-        <li>✅ Never send money to someone you met online</li>
-        <li>✅ Verify all investment opportunities</li>
-        <li>✅ Use our AI Detector before clicking links</li>
-        <li>✅ Enable 2FA on all accounts</li>
+    <div class="bg-white p-7 rounded-3xl shadow-sm">
+      <h3 class="font-semibold text-xl text-ink mb-4">How to protect yourself</h3>
+      <ul class="space-y-3 text-sm text-slate-700">
+        <li>✅ Slow down — pressure and urgency are the scammer's main tools.</li>
+        <li>✅ Verify independently using contact details you look up yourself.</li>
+        <li>✅ Never share passwords or one-time codes with anyone.</li>
+        <li>✅ Be wary of gift-card, crypto, or wire-transfer payment demands.</li>
+        <li>✅ Turn on two-factor authentication everywhere you can.</li>
+        <li>✅ Run our <a href="/self-check" class="text-brand underline">self-check</a> when unsure.</li>
       </ul>
     </div>
+  </div>
+
+  <!-- Reporting directory -->
+  <div id="report-channels" class="bg-slate-50 border border-slate-200 rounded-3xl p-8 scroll-mt-24">
+    <h3 class="font-display text-2xl font-semibold text-ink mb-2">Where to report a scam</h3>
+    <p class="text-sm text-slate-600 mb-6">
+      <strong>First, always:</strong> contact your local police and your bank or payment
+      provider — speed matters for stopping transfers. Then report to the relevant body:
+    </p>
+    <div class="grid sm:grid-cols-2 gap-4 text-sm">
+      <div class="bg-white rounded-2xl p-5">
+        <p class="font-semibold text-ink mb-1">🌍 International</p>
+        <p class="text-slate-600"><a class="text-brand hover:underline" href="https://econsumer.gov" target="_blank" rel="noopener">econsumer.gov</a> — cross-border consumer fraud, run by a coalition of governments.</p>
+      </div>
+      <div class="bg-white rounded-2xl p-5">
+        <p class="font-semibold text-ink mb-1">💻 Online crime</p>
+        <p class="text-slate-600"><a class="text-brand hover:underline" href="https://www.ic3.gov" target="_blank" rel="noopener">ic3.gov</a> — internet crime complaints, accepts international reports.</p>
+      </div>
+      <div class="bg-white rounded-2xl p-5">
+        <p class="font-semibold text-ink mb-1">🇺🇸 United States</p>
+        <p class="text-slate-600"><a class="text-brand hover:underline" href="https://reportfraud.ftc.gov" target="_blank" rel="noopener">reportfraud.ftc.gov</a></p>
+      </div>
+      <div class="bg-white rounded-2xl p-5">
+        <p class="font-semibold text-ink mb-1">🇬🇧 United Kingdom</p>
+        <p class="text-slate-600"><a class="text-brand hover:underline" href="https://www.actionfraud.police.uk" target="_blank" rel="noopener">Action Fraud</a></p>
+      </div>
+      <div class="bg-white rounded-2xl p-5">
+        <p class="font-semibold text-ink mb-1">🇦🇺 Australia</p>
+        <p class="text-slate-600"><a class="text-brand hover:underline" href="https://www.scamwatch.gov.au" target="_blank" rel="noopener">Scamwatch</a></p>
+      </div>
+      <div class="bg-white rounded-2xl p-5">
+        <p class="font-semibold text-ink mb-1">🇨🇦 Canada</p>
+        <p class="text-slate-600"><a class="text-brand hover:underline" href="https://antifraudcentre-centreantifraude.ca" target="_blank" rel="noopener">Canadian Anti-Fraud Centre</a></p>
+      </div>
+    </div>
+    <p class="text-xs text-slate-500 mt-5">In another country? Search your country's name plus “report fraud,” or <button onclick="openChat()" class="text-brand underline">ask a volunteer</button> and we'll help you find the right authority.</p>
   </div>
 </div>
 {% endblock %}
